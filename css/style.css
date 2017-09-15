@@ -1,0 +1,15 @@
+.background {
+    width: 1200px;
+    height: 800px;
+    background-color: aquamarine;
+    margin: 100px 0 0 400px;
+    overflow: auto;
+    position: relative;
+}
+.areaPlay
+{
+    height: 75%;
+    width: 75%;
+    margin:100px 0 0 150px;
+    background-color: cadetblue;
+}
