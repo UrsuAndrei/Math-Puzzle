@@ -2,4 +2,4 @@
 Game Math Puzzle
 
 Live exemple on
-- [x] [HTML Preview](https://cdn.rawgit.com/UrsuAndrei/Math-Puzzle/b30a3482/index.html)
+- [x] [HTML Preview](https://cdn.rawgit.com/UrsuAndrei/Math-Puzzle/8e2b732f/index.html)
