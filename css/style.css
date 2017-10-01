@@ -1,4 +1,3 @@
-
 body{
     background-color: black;
 
@@ -22,7 +21,6 @@ body{
     overflow: auto;
     border-radius: 5px;
 }
-
 #areaPlay div {
     background: antiquewhite;
     height: 160px;
@@ -45,7 +43,6 @@ body{
     border-radius: 10px;
 }
 #areaPlay div input{
-
     width: 100px;
     height: 100px;
     cursor: pointer;
@@ -53,7 +50,6 @@ body{
 input[type=checkbox] {
     display: none;
     z-index: 10;
-
 }
 #start{
     margin: 20px 0 0 45%;

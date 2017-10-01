@@ -1,21 +1,10 @@
-#content{
-    min-height: 100px;
-    width: 500px;
+#content div{
+    height: 200px;
+    width: 200px;
     background-color: dodgerblue;
-    overflow: auto;
 }
-#content div {
-    height: 50px;
-    width: 20%;
+p span::parent{
+    height: 100px;
+    width: 100px;
     background-color: green;
-    margin: 2.5%;
-    float:left;
-    color: white;
-}
-#abc{
-    border-radius: 5px;
-}
-input{
-    display: none;
-
 }
