@@ -51,32 +51,31 @@
             $(this).parent().parent().toggleClass("click");
             var a = $("input:checked").length;
             var cls = new Array();
-            for (var i = 0; i < 2; i++) {
+            for (var i = 0; i < 1; i++) {
                 $("input:checked").each(function () {
                     cls.push([$(this).attr("class")]);
-                    console.log(cls[0] + '&' + cls[1]);
+                    console.log(cls);
                 });
-                console.log(((nums[cls[0]][0] + nums[cls[0]][1]) + "+" + (nums[cls[1]][0] + nums[cls[1]][1])));
+//                console.log(cls[0][0] +cls[0][1]+cls[1][0]+cls[1][1]);
             }
-            ;
-            if (a < 3) {
-                if ((nums[cls[0]][0] + nums[cls[0]][1] == nums[cls[1]][0] + nums[cls[1]][1])) {
-                    $(".click").addClass("hide");
-                    $(".hide").fadeTo(1000, 0.6);
-                    $("input:checked").attr("disabled", true);
-                    $("input:checked").attr('checked', false);
-                    ;
-                    $(".click").removeClass("click");
-                }
-                else {
-                    $("input").attr('checked', false);
-                    $(".click").removeClass("click");
-                }
-            }
-            else {
-                $("input").attr('checked', false);
-                $(".click").removeClass("click");
-            }
+//            if (a <3) {
+//                if ((nums[cls[0]][0] + nums[cls[0]][1] == nums[cls[1]][0] + nums[cls[1]][1])) {
+//                    $(".click").addClass("hide");
+//                    $(".hide").fadeTo(1000, 0.6);
+//                    $("input:checked").attr("disabled", true);
+//                    $("input:checked").attr('checked', false);
+//                    ;
+//                    $(".click").removeClass("click");
+//                }
+//                else {
+//                    $("input").attr('checked', false);
+//                    $(".click").removeClass("click");
+//                }
+//            }
+//            else {
+//                $("input").attr('checked', false);
+//                $(".click").removeClass("click");
+//            }
         });
     }
 
