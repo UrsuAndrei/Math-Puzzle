@@ -9,7 +9,7 @@ body{
     max-width: 1200px;
     /*background-color: aquamarine;*/
     background-image: url("../img/background.jpg");
-    margin: 10% 0 0 20%;
+    margin: 5% 0 0 20%;
     overflow: auto;
     position: relative;
 }
@@ -22,32 +22,55 @@ body{
     overflow: auto;
     border-radius: 5px;
 }
+
 #areaPlay div {
     background: antiquewhite;
-    height: 25%;
-    width: 20%;
+    height: 160px;
+    width: 160px;
     float: left;
-    margin-left: 4%;
-    margin-top: 4%;
+    margin-left: 2%;
+    margin-top: 3%;
+    margin-bottom: 2px;
     opacity: 1;
     border-radius: 10px;
-    z-index: 100;
 }
-#areaPlay div p{
-    margin:60px;
-    font-size: 22px;
-    position: absolute;
-    z-index: 300;
+#areaPlay div:nth-child(4n+1){
+    clear:left;
+}
+#areaPlay div label{
+    height: 100%;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    border-radius: 10px;
 }
 #areaPlay div input{
 
-    width: 100%;
-    height: 100%;
-    margin: 0;
+    width: 100px;
+    height: 100px;
     cursor: pointer;
-    z-index: 200;
 }
-input[type=checkbox]:checked {
-    display: block;
+input[type=checkbox] {
+    display: none;
+    z-index: 10;
 
+}
+#start{
+    margin: 20px 0 0 45%;
+    height: 50px;
+    width: 90px;
+    font-size: 20px;
+    background: rgba(32,178,170, 1);
+    border: none;
+    color: white;
+    border-radius: 6px;
+    outline: none;
+}
+div label p {
+    padding:40%;
+    z-index: -20;
+}
+.click label  {
+    background-color: white;
+    transition: 0.7s;
 }
