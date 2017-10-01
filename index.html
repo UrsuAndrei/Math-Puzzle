@@ -34,7 +34,6 @@
         input[i] = input;
         input[i].setAttribute("class", i);
     }
-
     function create(n) {
         var divs = [];
         for (var x = 0; x < n; x++) {
@@ -51,7 +50,7 @@
             $(this).parent().parent().toggleClass("click");
             var a = $("input:checked").length;
             var cls = new Array();
-            for (var i = 0; i < 1; i++) {
+            for (var i = 0; i < a; i++) {
                 $("input:checked").each(function () {
                     cls.push([$(this).attr("class")]);
                     console.log(cls);
