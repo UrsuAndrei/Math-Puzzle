@@ -14,7 +14,4 @@ if ($result->num_rows > 0) {
     }
 }
 echo json_encode($numbers, true);
-
-$mytext = $_POST['mytext'];
-  echo $mytext;
 ?>

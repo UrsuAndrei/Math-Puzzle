@@ -1,115 +1,136 @@
-var nums;
+var nums = numbers();
+var numShuffled = shuffle(nums);
+var divs = [];
+var position = new Array();
+var classList=new Array();
+var indexDivs=new Array();
 
-function createDivs(divs, i) {
-    var div = document.createElement("DIV");
-    divs[i] = div;
-    div.setAttribute("class", i);
-    document.getElementById("areaPlay").appendChild(div);
-    var label = document.createElement("LABEL");
-    div.appendChild(label);
-    var input = document.createElement("input");
-    input.type = 'checkbox';
-    label.appendChild(input);
-    var p = document.createElement("p");
-    label.appendChild(p);
-    input[i] = input;
-    input[i].setAttribute("class", i);
-}
-function create(n) {
-    var divs = [];
-    for (var x = 0; x < n; x++) {
-        createDivs(divs, x);
-    }
-    var num = numbers(n);
-    nums = shuffle(num);
-    var targetDiv = document.getElementById("areaPlay").getElementsByTagName("p");
-    for (var i = 0; i < n; i++) {
-        targetDiv[i].innerHTML = nums[i][0] + '+' + nums[i][1];
-        console.info(targetDiv[i].innerHTML);
-    }
-    $("input").change(function check() {
-        $(this).parent().parent().toggleClass("click");
-        var a = $("input:checked").length;
-        var cls = new Array();
-        $("input:checked").each(function () {
-            cls.push([$(this).attr("class")]);
+function create() {
+    var numberDivs = $("#areaPlay div").length;
+    if (numberDivs == 0) {
+        for (var i = 0; i < 12; i++) {
+            divs.push("<div class='show'></div>");
+            $('#areaPlay').html(divs.join(''));
+            displayNumbers();
+        }
+        $("#areaPlay div").each(function () {
+            var index=($(this).attr('class'));
+            classList.push(index);
+            var indexD = $("#areaPlay div").index(this);
+            indexDivs.push(indexD);
+            return indexDivs;
         });
-        if(a==2){
-            if ((nums[cls[0]][0] + nums[cls[0]][1] == nums[cls[1]][0] + nums[cls[1]][1])) {
-                $(".click").addClass("hide");
-                $(".hide").fadeTo(1000, 0.6);
-                $("input:checked").attr("disabled", true);
-                $("input:checked").attr('checked', false);
-                ;
-                $(".click").removeClass("click");
+    }
+}
+
+function displayNumbers() {
+    var targetDiv = $("#areaPlay div");
+    for (var i = 0; i < 12; i++) {
+        targetDiv[i] = targetDiv.html(numShuffled[i][0] + "+" + numShuffled[i][1]);
+    }
+    var divSelected = $("#areaPlay .show");
+    divSelected.click(function click () {
+        $(this).attr("selected", "selected");
+        var index = $("#areaPlay div").index(this);
+        position.push(index);
+        console.log(position);
+        $(".show[selected]").click(function () {
+            $(".show[selected]").prop('selected',false);
+            position=[];
+        });
+        var indexLength = $("div[selected]").length;
+        console.log(indexLength);
+        if (indexLength == 2) {
+            if ((numShuffled[position[0]][0] + numShuffled[position[0]][1] == (numShuffled[position[1]][0] + numShuffled[position[1]][1]))) {
+                position=[];
+                $(".show[selected]").addClass('solved');
+                $(".show[selected]").removeClass('show');
+                $(".solved[selected]").removeAttr('selected');
             }
-            else {
-                $("input").attr('checked', false);
-                $(".click").removeClass("click");
-            }}
+            else{
+                $(".show[selected]").removeAttr('selected');
+                position=[];
+            }
+        }
     });
+}
+
+function numbers() {
+    var sums = [], a, b, c, d;
+    for (var i = 0; i < 6; i++) {
+        do {
+            a = Math.floor(Math.random() * 10) + 1;
+            b = Math.floor(Math.random() * 10) + 1;
+            var firstSum = a + b;
+        }
+        while (a == b || (a <= 3 && b <= 3));
+        do {
+            c = Math.floor(Math.random() * 10) + 1;
+            d = firstSum - c;
+        }
+        while (a == c || b == c || c >= firstSum || c == d || d <= 0);
+        sums[i] = [];
+        sums[i][0] = a;
+        sums[i][1] = b;
+        sums[i + 6] = [];
+        sums[i + 6][0] = c;
+        sums[i + 6][1] = d;
+    }
+    return sums;
 }
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-        // Pick a remaining element...
+    while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        // And swap it with the current element.
         temporaryValue = array[currentIndex];
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
     return array;
 }
-function numbers(n) {
-    var sums = [];
-    var a;
-    var b;
-    var c;
-    var d;
-    for (var i = 0; i < n / 2; i++) {
-        do {
-            a = Math.floor(Math.random() * 10) + 1;
-            b = Math.floor(Math.random() * 10) + 1;
-            var first = a + b;
-        }
-        while (a == b || (a == 1 && b == 2) || (a == 2 && b == 1) || (a == 3 && b == 1) || (a == 1 && b == 3));
-        do {
-            c = Math.floor(Math.random() * 10) + 1;
-            d = first - c;
-        }
-        while (a == c || b == c || c >= first || c == d || d <= 0);
-        sums[i] = [];
-        sums[i][0] = a;
-        sums[i][1] = b;
-        sums[i + n / 2] = [];
-        sums[i + n / 2][0] = c;
-        sums[i + n / 2][1] = d;
-    }
-    console.info(sums);
-    return sums;
-}
-$.ajax("date/list.php",{
-    cache:false,
-    dataType: 'json'
-}).done(function (numbers) {
-    console.debug('contacts loaded', numbers);
-    contacte.forEach(createRow);
-    $("#contacts-list tbody").html(tableContent);
 
-    $('#contacts-list a.edit').click(function() {
-        var id = $(this).data('id');
-        var contact = contacte.find(function(c) {
-            return c.id == id;
+function loadNumbers() {
+    var numberDivs = $("#areaPlay div").length;
+    if (numberDivs == 0) {
+        for (var i = 0; i < 12; i++) {
+            divs.push("<div class='show'></div>");
+            $('#areaPlay').html(divs.join(''));
+            displayNumbers();
+        }
+        $("#areaPlay div").each(function () {
+            var index=($(this).attr('class'));
+            classList.push(index);
+            var indexD = $("#areaPlay div").index(this);
+            indexDivs.push(indexD);
+            return indexDivs;
         });
-        console.debug('remove', id, contact, this);
-
-        $('input[name=id]').val(contact.id);
-        $('input[name=lastName]').val(contact.lastName);
-        $('input[name=firstName]').val(contact.firstName);
-        $('input[name=phone]').val(contact.phone);
+    }
+}
+$(document).ready(function () {
+    $("#reset").click(function () {
+        $.ajax({
+            method:"post",
+            url:"./date/add.php",
+            data:{id:indexDivs ,numbers:numShuffled, classes:classList}
+        })
+    });
+});
+$(document).ready(function () {
+    $("#start").click(function () {
+        $.ajax('date/list.php', {
+            cache: false,
+            dataType: 'json'
+        }).done(function (listNumbers) {
+            // console.debug('numbers loaded', listNumbers);
+            for(var i=0; i<12;i++){
+                numShuffled[i][0]=listNumbers[i].firstNumber;
+                numShuffled[i][1]=listNumbers[i].secondNumber;
+                classList[i]=listNumbers[i].class;
+            }
+            console.log(numShuffled[1]);
+            loadNumbers();
+        });
     });
 });
