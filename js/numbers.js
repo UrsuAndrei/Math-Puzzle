@@ -1,61 +1,23 @@
-var nums = numbers();
+var nums = generateNumbers();
 var numShuffled = shuffle(nums);
-var divs = [];
 var position = new Array();
-var classList=new Array();
-var indexDivs=new Array();
+var classList = new Array();
+var indexDivs = new Array();
 
-function create() {
-    var numberDivs = $("#areaPlay div").length;
-    if (numberDivs == 0) {
+function createEmptyTable() {
+        var divs = [];
         for (var i = 0; i < 12; i++) {
-            divs.push("<div class='show'></div>");
+            divs.push("<div></div>");
             $('#areaPlay').html(divs.join(''));
-            displayNumbers();
-        }
-        $("#areaPlay div").each(function () {
-            var index=($(this).attr('class'));
-            classList.push(index);
-            var indexD = $("#areaPlay div").index(this);
-            indexDivs.push(indexD);
-            return indexDivs;
-        });
     }
 }
-
 function displayNumbers() {
-    var targetDiv = $("#areaPlay div");
-    for (var i = 0; i < 12; i++) {
-        targetDiv[i] = targetDiv.html(numShuffled[i][0] + "+" + numShuffled[i][1]);
-    }
-    var divSelected = $("#areaPlay .show");
-    divSelected.click(function click () {
-        $(this).attr("selected", "selected");
-        var index = $("#areaPlay div").index(this);
-        position.push(index);
-        console.log(position);
-        $(".show[selected]").click(function () {
-            $(".show[selected]").prop('selected',false);
-            position=[];
-        });
-        var indexLength = $("div[selected]").length;
-        console.log(indexLength);
-        if (indexLength == 2) {
-            if ((numShuffled[position[0]][0] + numShuffled[position[0]][1] == (numShuffled[position[1]][0] + numShuffled[position[1]][1]))) {
-                position=[];
-                $(".show[selected]").addClass('solved');
-                $(".show[selected]").removeClass('show');
-                $(".solved[selected]").removeAttr('selected');
-            }
-            else{
-                $(".show[selected]").removeAttr('selected');
-                position=[];
-            }
-        }
+    $("#areaPlay div").each(function (i) {
+        $(this).html(numShuffled[i][0] + "+" + numShuffled[i][1]);
+        $(this).addClass(classList[i]);
     });
 }
-
-function numbers() {
+function generateNumbers() {
     var sums = [], a, b, c, d;
     for (var i = 0; i < 6; i++) {
         do {
@@ -91,46 +53,151 @@ function shuffle(array) {
     return array;
 }
 
-function loadNumbers() {
+function validateSolution() {
+    var divSelected = $("#areaPlay .show");
+    divSelected.click(function click() {
+        $(this).attr("selected", "selected");
+        var index = $("#areaPlay div").index(this);
+        position.push(index);
+        console.log(position);
+        var a=$("div[selected=true]").length;
+        console.log(a);
+        $(".show[selected]").click(function () {
+            $(".show[selected]").prop('selected', false);
+            // position = [];
+        });
+        var indexLength = $("div[selected]").length;
+        console.log(indexLength);
+        if (indexLength == 2) {
+            if ((numShuffled[position[0]][0] + numShuffled[position[0]][1] == (numShuffled[position[1]][0] + numShuffled[position[1]][1]))) {
+                position = [];
+                $(".show[selected]").addClass('solved');
+                $(".show[selected]").removeClass('show');
+                $(".solved[selected]").removeAttr('selected');
+            }
+            else {
+                $(".show[selected]").removeAttr('selected');
+                position = [];
+            }
+        }
+        alert("vs");
+        save();
+    });
+}
+
+function prepareSave() {
+    classList=[];
+    indexDivs=[];
+    $("#areaPlay div").each(function () {
+        var index = ($(this).attr('class'));
+        classList.push(index);
+        var indexD = $("#areaPlay div").index(this);
+        indexDivs.push(indexD);
+    });
+}
+
+
+function save() {
+    prepareSave();
+    $.ajax({
+        method: "post",
+        url: "./date/add.php",
+        data: {
+            id: indexDivs,
+            numbers: numShuffled,
+            classes: classList
+        }
+    });
+}
+function showNumbers() {
     var numberDivs = $("#areaPlay div").length;
     if (numberDivs == 0) {
-        for (var i = 0; i < 12; i++) {
-            divs.push("<div class='show'></div>");
-            $('#areaPlay').html(divs.join(''));
-            displayNumbers();
-        }
-        $("#areaPlay div").each(function () {
-            var index=($(this).attr('class'));
-            classList.push(index);
-            var indexD = $("#areaPlay div").index(this);
-            indexDivs.push(indexD);
-            return indexDivs;
-        });
+        createEmptyTable();
+        displayNumbers();
     }
 }
-$(document).ready(function () {
-    $("#reset").click(function () {
-        $.ajax({
-            method:"post",
-            url:"./date/add.php",
-            data:{id:indexDivs ,numbers:numShuffled, classes:classList}
-        })
+function load() {
+    $.ajax('date/list.php', {
+        cache: false,
+        dataType: 'json'
+    }).done(function (listNumbers) {
+        // console.debug('numbers loaded', listNumbers);
+        for (var i = 0; i < 12; i++) {
+            numShuffled[i][0] = listNumbers[i].firstNumber;
+            numShuffled[i][1] = listNumbers[i].secondNumber;
+            classList[i] = listNumbers[i].class;
+        }
+        console.log(numShuffled);
+        showNumbers();
+        validateSolution();
     });
-});
-$(document).ready(function () {
-    $("#start").click(function () {
-        $.ajax('date/list.php', {
-            cache: false,
-            dataType: 'json'
-        }).done(function (listNumbers) {
-            // console.debug('numbers loaded', listNumbers);
-            for(var i=0; i<12;i++){
-                numShuffled[i][0]=listNumbers[i].firstNumber;
-                numShuffled[i][1]=listNumbers[i].secondNumber;
-                classList[i]=listNumbers[i].class;
-            }
-            console.log(numShuffled[1]);
-            loadNumbers();
-        });
+
+}
+function newNumbers() {
+    nums=generateNumbers();
+    numShuffled=shuffle(nums);
+    alert("res");
+}
+function prepareReset() {
+    numShuffled=[];
+    newNumbers();
+    console.log(numShuffled);
+    indexDivs=[];
+    classList=['show','show','show','show','show','show','show','show','show','show','show','show'];
+    position = [];
+    $("#areaPlay div").each(function () {
+        var indexD = $("#areaPlay div").index(this);
+        indexDivs.push(indexD);
+        $(this).removeClass("solved");
+        $(".show[selected]").removeAttr('selected');
     });
+}
+function saveReset(){
+    prepareReset();
+    executeAjax();
+    // console.log(classList);
+    // $.ajax({
+    //     method: "post",
+    //     url: "./date/add.php",
+    //     data: {
+    //         id: indexDivs,
+    //         numbers: numShuffled,
+    //         classes: classList
+    //     }
+    // });
+}
+
+function executeAjax()
+{
+    $.ajax({
+        method: "post",
+        url: "./date/add.php",
+        data: {
+            id: indexDivs,
+            numbers: numShuffled,
+            classes: classList
+        }
+    });
+    console.log(numShuffled);
+}
+
+
+
+function reset() {
+    saveReset();
+    // load();
+
+}
+
+$(document).ready(function () {
+
+    $('#reset').click(function () {
+       reset();
+       load();
+       displayNumbers();
+
+
+    });
+    load();
 });
+

@@ -7,8 +7,8 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
     $numbers[]=array(
         "id"=>$row["id"],
-        "firstNumber"=>$row["firstNumber"],
-        "secondNumber"=>$row["secondNumber"],
+        "firstNumber"=>intval($row["firstNumber"]),
+        "secondNumber"=>intval($row["secondNumber"]),
         "class"=>$row["class"]
     );
     }
