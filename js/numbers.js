@@ -17,6 +17,7 @@ function displayNumbers() {
         $(this).addClass(classList[i]);
     });
 }
+
 function generateNumbers() {
     var sums = [], a, b, c, d;
     for (var i = 0; i < 6; i++) {
@@ -60,12 +61,6 @@ function validateSolution() {
         var index = $("#areaPlay div").index(this);
         position.push(index);
         console.log(position);
-        var a=$("div[selected=true]").length;
-        console.log(a);
-        $(".show[selected]").click(function () {
-            $(".show[selected]").prop('selected', false);
-            // position = [];
-        });
         var indexLength = $("div[selected]").length;
         console.log(indexLength);
         if (indexLength == 2) {
@@ -96,7 +91,6 @@ function prepareSave() {
     });
 }
 
-
 function save() {
     prepareSave();
     $.ajax({
@@ -116,33 +110,32 @@ function showNumbers() {
         displayNumbers();
     }
 }
-function load() {
+function load()
+{
     $.ajax('date/list.php', {
         cache: false,
         dataType: 'json'
     }).done(function (listNumbers) {
-        // console.debug('numbers loaded', listNumbers);
         for (var i = 0; i < 12; i++) {
             numShuffled[i][0] = listNumbers[i].firstNumber;
             numShuffled[i][1] = listNumbers[i].secondNumber;
             classList[i] = listNumbers[i].class;
         }
-        console.log(numShuffled);
         showNumbers();
         validateSolution();
     });
-
 }
+
 function newNumbers() {
     nums=generateNumbers();
     numShuffled=shuffle(nums);
-    alert("res");
+    console.log('nn');
+    return numShuffled;
 }
+
+
 function prepareReset() {
-    numShuffled=[];
     newNumbers();
-    console.log(numShuffled);
-    indexDivs=[];
     classList=['show','show','show','show','show','show','show','show','show','show','show','show'];
     position = [];
     $("#areaPlay div").each(function () {
@@ -151,24 +144,11 @@ function prepareReset() {
         $(this).removeClass("solved");
         $(".show[selected]").removeAttr('selected');
     });
-}
-function saveReset(){
-    prepareReset();
-    executeAjax();
-    // console.log(classList);
-    // $.ajax({
-    //     method: "post",
-    //     url: "./date/add.php",
-    //     data: {
-    //         id: indexDivs,
-    //         numbers: numShuffled,
-    //         classes: classList
-    //     }
-    // });
+    console.log(numShuffled)
 }
 
-function executeAjax()
-{
+function saveReset(){
+    prepareReset();
     $.ajax({
         method: "post",
         url: "./date/add.php",
@@ -178,26 +158,18 @@ function executeAjax()
             classes: classList
         }
     });
-    console.log(numShuffled);
 }
-
-
 
 function reset() {
     saveReset();
-    // load();
-
+    load();
+    displayNumbers();
 }
 
 $(document).ready(function () {
-
-    $('#reset').click(function () {
-       reset();
-       load();
-       displayNumbers();
-
-
-    });
     load();
+    $('#reset').click(function () {
+        reset();
+    });
 });
 
