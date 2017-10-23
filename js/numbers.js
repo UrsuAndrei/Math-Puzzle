@@ -5,17 +5,26 @@ var classList = new Array();
 var indexDivs = new Array();
 
 function createEmptyTable() {
-        var divs = [];
-        for (var i = 0; i < 12; i++) {
-            divs.push("<div></div>");
-            $('#areaPlay').html(divs.join(''));
+    var divs = [];
+    for (var i = 0; i < 12; i++) {
+        divs.push("<div></div>");
     }
+    $('#areaPlay').html(divs.join(''));
 }
+
 function displayNumbers() {
     $("#areaPlay div").each(function (i) {
         $(this).html(numShuffled[i][0] + "+" + numShuffled[i][1]);
         $(this).addClass(classList[i]);
     });
+}
+
+function showNumbers() {
+    var numberDivs = $("#areaPlay div").length;
+    if (numberDivs == 0) {
+        createEmptyTable();
+    }
+    displayNumbers();
 }
 
 function generateNumbers() {
@@ -54,6 +63,11 @@ function shuffle(array) {
     return array;
 }
 
+function newNumbers() {
+    nums = generateNumbers();
+    numShuffled = shuffle(nums);
+}
+
 function validateSolution() {
     var divSelected = $("#areaPlay .show");
     divSelected.click(function click() {
@@ -79,8 +93,8 @@ function validateSolution() {
 }
 
 function prepareSave() {
-    classList=[];
-    indexDivs=[];
+    classList = [];
+    indexDivs = [];
     $("#areaPlay div").each(function () {
         var index = ($(this).attr('class'));
         classList.push(index);
@@ -101,15 +115,8 @@ function save() {
         }
     });
 }
-function showNumbers() {
-    var numberDivs = $("#areaPlay div").length;
-    if (numberDivs == 0) {
-        createEmptyTable();
-    }
-    displayNumbers();
-}
-function load()
-{
+
+function load() {
     $.ajax('date/list.php', {
         cache: false,
         dataType: 'json'
@@ -125,15 +132,9 @@ function load()
 
 }
 
-function newNumbers() {
-    nums=generateNumbers();
-    numShuffled=shuffle(nums);
-}
-
-
 function prepareReset() {
     newNumbers();
-    classList=['show','show','show','show','show','show','show','show','show','show','show','show'];
+    classList = ['show', 'show', 'show', 'show', 'show', 'show', 'show', 'show', 'show', 'show', 'show', 'show'];
     position = [];
     $("#areaPlay div").each(function () {
         var indexD = $("#areaPlay div").index(this);
@@ -143,7 +144,7 @@ function prepareReset() {
     });
 }
 
-function reset(){
+function reset() {
     prepareReset();
     $.ajax({
         method: "post",
@@ -157,6 +158,7 @@ function reset(){
         load();
     });
 }
+
 $(document).ready(function () {
     load();
     $('#reset').click(function () {
