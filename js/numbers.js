@@ -60,9 +60,7 @@ function validateSolution() {
         $(this).attr("selected", "selected");
         var index = $("#areaPlay div").index(this);
         position.push(index);
-        console.log(position);
         var indexLength = $("div[selected]").length;
-        console.log(indexLength);
         if (indexLength == 2) {
             if ((numShuffled[position[0]][0] + numShuffled[position[0]][1] == (numShuffled[position[1]][0] + numShuffled[position[1]][1]))) {
                 position = [];
@@ -107,8 +105,8 @@ function showNumbers() {
     var numberDivs = $("#areaPlay div").length;
     if (numberDivs == 0) {
         createEmptyTable();
-        displayNumbers();
     }
+    displayNumbers();
 }
 function load()
 {
@@ -124,13 +122,12 @@ function load()
         showNumbers();
         validateSolution();
     });
+
 }
 
 function newNumbers() {
     nums=generateNumbers();
     numShuffled=shuffle(nums);
-    console.log('nn');
-    return numShuffled;
 }
 
 
@@ -144,10 +141,9 @@ function prepareReset() {
         $(this).removeClass("solved");
         $(".show[selected]").removeAttr('selected');
     });
-    console.log(numShuffled)
 }
 
-function saveReset(){
+function reset(){
     prepareReset();
     $.ajax({
         method: "post",
@@ -157,15 +153,10 @@ function saveReset(){
             numbers: numShuffled,
             classes: classList
         }
+    }).done(function () {
+        load();
     });
 }
-
-function reset() {
-    saveReset();
-    load();
-    displayNumbers();
-}
-
 $(document).ready(function () {
     load();
     $('#reset').click(function () {
