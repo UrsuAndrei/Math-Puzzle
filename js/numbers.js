@@ -74,7 +74,9 @@ function validateSolution() {
         $(this).attr("selected", "selected");
         var index = $("#areaPlay div").index(this);
         position.push(index);
+        console.log(position);
         var indexLength = $("div[selected]").length;
+        console.log(indexLength);
         if (indexLength == 2) {
             if ((numShuffled[position[0]][0] + numShuffled[position[0]][1] == (numShuffled[position[1]][0] + numShuffled[position[1]][1]))) {
                 position = [];
@@ -87,8 +89,12 @@ function validateSolution() {
                 position = [];
             }
         }
-        alert("vs");
         save();
+        var numbersSolved = $('.solved').length;
+        if (numbersSolved == 12) {
+            $('#areaPlay').hide();
+            $('#solved').show();
+        }
     });
 }
 
@@ -129,7 +135,6 @@ function load() {
         showNumbers();
         validateSolution();
     });
-
 }
 
 function prepareReset() {
@@ -142,6 +147,7 @@ function prepareReset() {
         $(this).removeClass("solved");
         $(".show[selected]").removeAttr('selected');
     });
+    displayNumbers();
 }
 
 function reset() {
@@ -154,8 +160,6 @@ function reset() {
             numbers: numShuffled,
             classes: classList
         }
-    }).done(function () {
-        load();
     });
 }
 
@@ -163,6 +167,8 @@ $(document).ready(function () {
     load();
     $('#reset').click(function () {
         reset();
+        $('#areaPlay').show();
+        $('#solved').hide();
+        window.location.reload();
     });
 });
-

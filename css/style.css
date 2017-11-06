@@ -8,7 +8,7 @@ body{
     max-width: 1200px;
     /*background-color: aquamarine;*/
     background-image: url("../img/background.jpg");
-    margin: 5% 0 0 20%;
+    margin: 3% 0 0 20%;
     overflow: auto;
     position: relative;
 }
@@ -79,7 +79,7 @@ body{
     transition: 0.6s;
 }
 #reset{
-    margin: 20px 0 0 50px;
+    margin: 20px 0 0 43%;
     height: 50px;
     width: 90px;
     font-size: 20px;
@@ -89,4 +89,22 @@ body{
     border-radius: 6px;
     outline: none;
     float: left;
+}
+#solved{
+    height: 75%;
+    width: 75%;
+    margin:10% 0 0 12%;
+    background: rgba(32,178,170, 0.7);
+    overflow: auto;
+    border-radius: 5px;
+    display: table;
+}
+#solved p{
+    text-align:center;
+    vertical-align: middle;
+    display: table-cell;
+    font-size: 40px;
+    font-family: Apple Chancery, cursive;
+    font-weight: bold;
+    color: antiquewhite;
 }
